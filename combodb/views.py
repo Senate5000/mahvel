@@ -12,13 +12,14 @@ def new_game(request):
         form = GameForm(request.POST, instance=game)
 
         if form.is_valid():
-            if request.POST.get('title', "").find(', ') == 1:
+            if request.POST.get('title', "").find(',') != -1:
                 print 'submitting multiple'
                 gameList = request.POST.get('title', "").split(',')
                 for i in gameList:
                     game = Game()
                     game.title = i.lstrip()
                     game.save()
+                    return HttpResponseRedirect('/combodb/new_game.html')
             else:
                 try:
                     print 'submitting single'
@@ -39,15 +40,17 @@ def new_character(request):
         character = Character()
         form = CharacterForm(request.POST, instance=character)
         game = request.POST.get('game', "")
+        print game
         if form.is_valid():
-            if request.POST.get('name', "").find(', ') == 1:
+            if request.POST.get('name', "").find(',') != -1:
                 print 'submitting multiple'
                 characterList = request.POST.get('name', "").split(', ')
                 for i in characterList:
                     character = Character()
-                    character.game = Game.objects.get(title=game)
+                    character.game = Game.objects.get(id=game)
                     character.name = i
                     character.save()
+                    return HttpResponseRedirect('/combodb/new_character.html')
             else:
                 try:
                     print 'submitting single'
@@ -60,3 +63,21 @@ def new_character(request):
         form = CharacterForm()
 
     return render_to_response('combodb/new_character.html', {'form': form}, context_instance=RequestContext(request))
+
+
+def new_ability(request):
+    if request.method == 'POST':
+        ability = Ability()
+        form = AbilityForm(request.POST, instance=ability)
+
+        if form.is_valid():
+            try:
+                ability = form.save()
+                return HttpResponseRedirect('/combodb/new_ability.html')
+            except Exception, e:
+                print e
+
+    else:
+        form = AbilityForm()
+
+    return render_to_response('combodb/new_ability.html', {'form': form}, context_instance=RequestContext(request))
