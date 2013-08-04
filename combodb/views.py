@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
+from django.views.decorators.csrf import ensure_csrf_cookie
 from combodb.forms import GameForm, CharacterForm, AbilityForm, ComboForm
 from combodb.models import Game, Character, Ability, Combo
 
@@ -81,3 +82,37 @@ def new_ability(request):
         form = AbilityForm()
 
     return render_to_response('combodb/new_ability.html', {'form': form}, context_instance=RequestContext(request))
+
+
+def new_combo(request):
+    if request.method == 'POST':
+        combo = Combo()
+        form = ComboForm(request.POST, instance=combo)
+
+        if form.is_valid():
+            try:
+                combo = form.save()
+                return HttpResponseRedirect('/combodb/new_combo.html')
+            except Exception, e:
+                print e
+
+    else:
+        form = ComboForm()
+
+    return render_to_response('combodb/new_combo.html', {'form': form}, context_instance=RequestContext(request))
+
+
+def view_combo(request, comboId):
+    try: 
+        combo = Combo.objects.get(pk=comboId)
+        inputs = combo.inputs.split(',')
+    except Exception, e:
+        print e
+
+    return render_to_response('combodb/view_combo.html', {'combo': combo, 'inputs': inputs}, context_instance=RequestContext(request))
+
+
+@ensure_csrf_cookie
+def json_test(request):
+
+    return render_to_response('test/jsontest.html', context_instance=RequestContext(request))

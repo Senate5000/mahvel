@@ -1,0 +1,7 @@
+<form action="" method="post" enctype="multipart/form-data" id="comboForm">
+        {% csrf_token %}
+<table>
+    {{form.as_table}}
+    <tr><td></td><td><input type="submit" value="Submit"/></td></tr>
+</table>
+</form>

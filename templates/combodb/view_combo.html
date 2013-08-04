@@ -1,0 +1,57 @@
+<html>
+<head>
+	<style>
+		#combo_inputs_normal{
+			display:block;
+		}
+		#combo_inputs_gg{
+			display:none;
+		}
+	</style>
+</head>
+<body>
+<input type = 'radio' class = 'notationSelection' name = 'inputDisplay' value = 'Normal' checked> Normal
+<input type = 'radio' class = 'notationSelection' name = 'inputDisplay' value = 'Guilty Gear'> Guilty Gear<br />
+<div id = 'combo_inputs_normal'>{{combo.inputs}}</div>
+<div id = 'combo_inputs_gg'>{{combo.inputs}}</div>
+</body>
+</html>
+<script src = "/static/scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var replacement_text_normal = $('#combo_inputs_normal').html();
+	replacement_text_normal = replacement_text_normal.replace(/:l/g,'<img src="/static/images/L.png" />');
+	replacement_text_normal = replacement_text_normal.replace(/:m/g,'<img src="/static/images/M.png" />');
+	replacement_text_normal = replacement_text_normal.replace(/:h/g,'<img src="/static/images/H.png" />');
+	replacement_text_normal = replacement_text_normal.replace(/:s/g,'<img src="/static/images/S.png" />');
+	replacement_text_normal = replacement_text_normal.replace(/:atk/g,'<img src="/static/images/Atk.png" />');
+	replacement_text_normal = replacement_text_normal.replace(/:236/g,'<img src="/static/images/Qcf.png" />');
+	replacement_text_normal = replacement_text_normal.replace(/:623/g,'<img src="/static/images/Dp.png" />');
+	replacement_text_normal = replacement_text_normal.replace(/:6/g,'<img src="/static/images/F.png" />');
+	replacement_text_normal = replacement_text_normal.replace(/:4/g,'<img src="/static/images/B.png" />');
+	$('#combo_inputs_normal').html(replacement_text_normal);
+	var replacement_text_gg = $('#combo_inputs_gg').html();
+	replacement_text_gg = replacement_text_gg.replace(/ \+ /g,'');
+	replacement_text_gg = replacement_text_gg.replace(/:l/g,'<img src="/static/images/L.png" />');
+	replacement_text_gg = replacement_text_gg.replace(/:m/g,'<img src="/static/images/M.png" />');
+	replacement_text_gg = replacement_text_gg.replace(/:h/g,'<img src="/static/images/H.png" />');
+	replacement_text_gg = replacement_text_gg.replace(/:s/g,'<img src="/static/images/S.png" />');
+	replacement_text_gg = replacement_text_gg.replace(/:atk/g,'<img src="/static/images/Atk.png" />');
+	replacement_text_gg = replacement_text_gg.replace(/:236/g,'236');
+	replacement_text_gg = replacement_text_gg.replace(/:623/g,'623');
+	replacement_text_gg = replacement_text_gg.replace(/:6/g,'6');
+	replacement_text_gg = replacement_text_gg.replace(/:4/g,'4');
+	$('#combo_inputs_gg').html(replacement_text_gg);
+});
+$('.notationSelection').change(function(){
+	var radioselected = $('input[name=inputDisplay]:checked').val();
+	console.log(radioselected);
+	if(radioselected == 'Normal'){
+		$('#combo_inputs_normal').css('display', 'block');
+		$('#combo_inputs_gg').css('display', 'none');
+	}else if(radioselected == 'Guilty Gear'){
+		$('#combo_inputs_normal').css('display', 'none');
+		$('#combo_inputs_gg').css('display', 'block');
+	};
+})
+</script>
